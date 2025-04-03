@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/cmake-build-debug-event-trace/_deps/imgui-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-debug-event-trace/_deps/imgui_node_editor-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-debug-event-trace/_deps/imguinodeeditor-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-debug-event-trace/_deps/imnodes-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-debug-event-trace/_deps/imnodes-src/vcpkg" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-debug/_deps/imgui-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-debug/_deps/imgui_node_editor-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-debug/_deps/imguinodeeditor-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-debug/_deps/imnodes-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-debug/_deps/imnodes-src/vcpkg" vcs="Git" />
+  </component>
+</project>
