@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <vector>
+#include <ranges>
 
 #include <imblueprint/Node.h>
 

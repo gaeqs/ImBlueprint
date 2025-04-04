@@ -71,6 +71,16 @@ namespace ImBlueprint
         return *this;
     }
 
+    Editor::Editor() :
+        _minimap(false),
+        _nodeToRemove(nullptr)
+    {
+        if (CONTEXT_COUNT++ == 0) {
+            ImNodes::CreateContext();
+            ImNodes::GetIO().LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
+        }
+    }
+
     Editor::~Editor()
     {
         if (--CONTEXT_COUNT == 0) {

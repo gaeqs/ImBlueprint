@@ -4,7 +4,7 @@
 
 #include <GLFW/glfw3.h>
 #include <stdio.h>
-#include <imblueprint/Editor.h>
+#include <imblueprint/imblueprint.h>
 
 #ifdef __APPLE__
     #define GL_SILENCE_DEPRECATION
