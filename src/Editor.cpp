@@ -16,7 +16,16 @@ namespace
 
 namespace ImBlueprint
 {
+    Editor::Editor(Editor&& other) noexcept :
+        _handler(other._handler),
+        _minimap(other._minimap)
+    {
+        other._handler = new EditorHandler(&other);
+        _handler->editor = this;
+    }
+
     Editor::Editor() :
+        _handler(new EditorHandler(this)),
         _minimap(false)
     {
         if (CONTEXT_COUNT++ == 0) {
@@ -29,6 +38,8 @@ namespace ImBlueprint
         if (--CONTEXT_COUNT == 0) {
             ImNodes::DestroyContext();
         }
+
+        delete _handler;
     }
 
     bool Editor::isShowingMinimap() const
@@ -41,50 +52,29 @@ namespace ImBlueprint
         _minimap = minimap;
     }
 
-    void Editor::render() const
+    void Editor::render()
     {
         ImNodes::BeginNodeEditor();
 
-        ImNodes::BeginNode(0);
-
-        ImNodes::BeginNodeTitleBar();
-        ImGui::TextUnformatted("Dataset");
-        ImNodes::EndNodeTitleBar();
-
-        ImGui::Text("Hello world");
-        ImGui::Text("Hello world");
-        ImGui::Text("Hello world");
-
-        ImNodes::BeginOutputAttribute(1);
-        // in between Begin|EndAttribute calls, you can call ImGui
-        // UI functions
-        ImGui::Text("output pin");
-        ImNodes::EndOutputAttribute();
-
-        ImNodes::EndNode();
-
-        ImNodes::BeginNode(1);
-
-        ImNodes::BeginNodeTitleBar();
-        ImGui::TextUnformatted("Input");
-        ImNodes::EndNodeTitleBar();
-
-        ImGui::Text("Hello world");
-        ImGui::Text("Hello world");
-        ImGui::Text("Hello world");
-
-        ImNodes::BeginInputAttribute(2, ImNodesPinShape_QuadFilled);
-        // in between Begin|EndAttribute calls, you can call ImGui
-        // UI functions
-        ImGui::Text("input pin");
-        ImNodes::EndOutputAttribute();
-
-        ImNodes::EndNode();
+        for (auto& node : _nodes) {
+            node->render();
+        }
 
         if (_minimap) {
             ImNodes::MiniMap();
         }
         ImNodes::EndNodeEditor();
+    }
+
+    Editor& Editor::operator=(Editor&& other) noexcept
+    {
+        delete _handler;
+        _handler = other._handler;
+        _minimap = other._minimap;
+
+        other._handler = new EditorHandler(&other);
+        _handler->editor = this;
+        return *this;
     }
 
 } // namespace ImBlueprint

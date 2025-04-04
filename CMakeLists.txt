@@ -83,7 +83,7 @@ endif ()
 
 configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.h.in
-        ${IMBLUEPRINT_GENERATED_DIR}/imBlueprint/version.h
+        ${IMBLUEPRINT_GENERATED_DIR}/imblueprint/version.h
 )
 
 # Create the library

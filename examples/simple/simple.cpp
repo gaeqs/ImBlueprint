@@ -10,6 +10,17 @@
     #define GL_SILENCE_DEPRECATION
 #endif
 
+class TestNode : public ImBlueprint::Node
+{
+  public:
+    TestNode() :
+        Node("Test node")
+    {
+        defineInput<int>("Patata");
+        defineOutput<int>("Pototo");
+    }
+};
+
 static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "Error GLFW %d: %s\n", error, description);
@@ -44,6 +55,7 @@ int main(int, char**)
     ImGui_ImplOpenGL3_Init("#version 330");
 
     ImBlueprint::Editor editor;
+    editor.addNode<TestNode>();
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
