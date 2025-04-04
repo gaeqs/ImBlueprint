@@ -21,6 +21,56 @@ class TestNode : public ImBlueprint::Node
     }
 };
 
+class ValueNode : public ImBlueprint::Node
+{
+    int _value;
+
+  public:
+    explicit ValueNode(int initial) :
+        Node("Value"),
+        _value(initial)
+    {
+        defineOutput<int>("value", _value);
+    }
+
+    void renderBody() override
+    {
+        ImGui::SetNextItemWidth(100);
+        if (ImGui::InputInt("Value", &_value)) {
+            sendOutput("value", _value);
+        }
+    }
+};
+
+class ValueSum : public ImBlueprint::Node
+{
+    int _result;
+
+  public:
+    ValueSum() :
+        Node("Sum"),
+        _result(0)
+    {
+        defineInput<int>("first");
+        defineInput<int>("second");
+        defineOutput<int>("result", _result);
+    }
+
+    void renderBody() override
+    {
+        ImGui::Text("Current result: %d", _result);
+    }
+
+    void onInputChange(const std::string& name, const std::any& value) override
+    {
+        auto out = getInput<int>("first").value_or(0) + getInput<int>("second").value_or(0);
+        if (out != _result) {
+            _result = out;
+            sendOutput("result", _result);
+        }
+    }
+};
+
 static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "Error GLFW %d: %s\n", error, description);
@@ -55,7 +105,13 @@ int main(int, char**)
     ImGui_ImplOpenGL3_Init("#version 330");
 
     ImBlueprint::Editor editor;
-    editor.addNode<TestNode>();
+    editor.addNode<ValueNode>(5);
+    editor.addNode<ValueNode>(10);
+    editor.addNode<ValueNode>(15);
+    editor.addNode<ValueSum>();
+    editor.addNode<ValueSum>();
+    editor.addNode<ValueSum>();
+    editor.addNode<ValueSum>();
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();

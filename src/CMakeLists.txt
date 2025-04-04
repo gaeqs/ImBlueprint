@@ -21,6 +21,9 @@ target_sources(imblueprint PRIVATE
         Node.cpp
         NodeInput.cpp
         NodeOutput.cpp
+        UIDProvider.cpp
+        EditorElement.cpp
+        Link.cpp
 )
 
 target_include_directories(imblueprint PUBLIC

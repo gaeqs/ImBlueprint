@@ -8,21 +8,34 @@
 #include <typeindex>
 #include <any>
 #include <string>
+#include <unordered_set>
+
+#include <imblueprint/Link.h>
+#include <imblueprint/EditorElement.h>
 
 namespace ImBlueprint
 {
 
-    struct EditorHandler;
+    class Node;
+    class NodeInput;
 
-    class NodeOutput
+    class NodeOutput : public EditorElement
     {
-        EditorHandler* _handler;
+        Node* _node;
         std::string _name;
         std::type_index _type;
         std::any _value;
 
+        std::unordered_set<Link> _links;
+
       public:
-        NodeOutput(std::string name, std::type_index type);
+        NodeOutput(Node* node, std::string name, std::type_index type);
+
+        ~NodeOutput();
+
+        virtual void render();
+
+        Node* getNode() const;
 
         [[nodiscard]] const std::string& getName() const;
 
@@ -32,7 +45,13 @@ namespace ImBlueprint
 
         bool setValue(std::any value);
 
-        void assignHandler(EditorHandler* handler);
+        [[nodiscard]] const std::unordered_set<Link>& getLinks() const;
+
+        bool addLink(NodeInput* input);
+
+        void removeLink(NodeInput* input);
+
+        bool willLinkCreateCircularDependency(const NodeInput* input) const;
     };
 
 } // namespace ImBlueprint
