@@ -15,7 +15,8 @@ namespace ImBlueprint
     NodeInput::NodeInput(Node* node, std::string name, std::type_index type) :
         _node(node),
         _name(std::move(name)),
-        _type(type)
+        _type(type),
+        _output(nullptr)
     {
     }
 

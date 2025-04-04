@@ -30,6 +30,11 @@ class ValueNode : public ImBlueprint::Node
         Node("Value"),
         _value(initial)
     {
+        defineInput<int>("test1");
+        defineInput<int>("test2");
+        defineInput<int>("test3");
+        defineInput<int>("test4");
+        defineInput<int>("test1");
         defineOutput<int>("value", _value);
     }
 

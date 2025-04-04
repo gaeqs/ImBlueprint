@@ -56,24 +56,25 @@ namespace ImBlueprint
         }
 
         template<typename T>
-        void defineInput(const std::string& name)
+        bool defineInput(const std::string& name)
         {
-            _inputs.insert({name, std::make_unique<NodeInput>(this, name, typeid(T))});
+            return _inputs.insert({name, std::make_unique<NodeInput>(this, name, typeid(T))}).second;
         }
 
         template<typename T>
-        void defineOutput(const std::string& name)
+        bool defineOutput(const std::string& name)
         {
-            _outputs.insert({name, std::make_unique<NodeOutput>(this, name, typeid(T))});
+            return _outputs.insert({name, std::make_unique<NodeOutput>(this, name, typeid(T))}).second;
         }
 
         template<typename T>
-        void defineOutput(const std::string& name, T initialValue)
+        bool defineOutput(const std::string& name, T initialValue)
         {
             auto [it, ok] = _outputs.insert({name, std::make_unique<NodeOutput>(this, name, typeid(T))});
             if (ok) {
                 it->second->setValue(initialValue);
             }
+            return ok;
         }
     };
 
