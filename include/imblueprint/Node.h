@@ -2,8 +2,8 @@
 // Created by gaeqs on 2/04/25.
 //
 
-#ifndef NODE_H
-#define NODE_H
+#ifndef IMBLUEPRINT_NODE_H
+#define IMBLUEPRINT_NODE_H
 
 #include <functional>
 #include <memory>
@@ -79,4 +79,4 @@ namespace ImBlueprint
 
 } // namespace ImBlueprint
 
-#endif // NODE_H
+#endif // IMBLUEPRINT_NODE_H

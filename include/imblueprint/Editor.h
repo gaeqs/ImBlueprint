@@ -2,8 +2,10 @@
 // Created by gaeqs on 2/04/25.
 //
 
-#ifndef EDITOR_H
-#define EDITOR_H
+#ifndef IMBLUEPRINT_EDITOR_H
+#define IMBLUEPRINT_EDITOR_H
+
+#include <imgui.h>
 
 #include <memory>
 #include <vector>
@@ -73,4 +75,4 @@ namespace ImBlueprint
 
 } // namespace ImBlueprint
 
-#endif // EDITOR_H
+#endif // IMBLUEPRINT_EDITOR_H

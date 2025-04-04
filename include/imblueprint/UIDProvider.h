@@ -2,8 +2,8 @@
 // Created by gaeqs on 4/04/25.
 //
 
-#ifndef UIDPROVIDER_H
-#define UIDPROVIDER_H
+#ifndef IMBLUEPRINT_UIDPROVIDER_H
+#define IMBLUEPRINT_UIDPROVIDER_H
 
 namespace ImBlueprint
 {
@@ -20,4 +20,4 @@ namespace ImBlueprint
 
 } // namespace ImBlueprint
 
-#endif // UIDPROVIDER_H
+#endif // IMBLUEPRINT_UIDPROVIDER_H

@@ -2,8 +2,8 @@
 // Created by gaeqs on 2/04/25.
 //
 
-#ifndef NODEOUTPUT_H
-#define NODEOUTPUT_H
+#ifndef IMBLUEPRINT_NODEOUTPUT_H
+#define IMBLUEPRINT_NODEOUTPUT_H
 
 #include <typeindex>
 #include <any>
@@ -56,4 +56,4 @@ namespace ImBlueprint
 
 } // namespace ImBlueprint
 
-#endif // NODEOUTPUT_H
+#endif // IMBLUEPRINT_NODEOUTPUT_H

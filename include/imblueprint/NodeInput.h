@@ -2,8 +2,8 @@
 // Created by gaeqs on 2/04/25.
 //
 
-#ifndef NODEINPUT_H
-#define NODEINPUT_H
+#ifndef IMBLUEPRINT_NODEINPUT_H
+#define IMBLUEPRINT_NODEINPUT_H
 
 #include <any>
 #include <optional>
@@ -60,4 +60,4 @@ namespace ImBlueprint
 
 } // namespace ImBlueprint
 
-#endif // NODEINPUT_H
+#endif // IMBLUEPRINT_NODEINPUT_H

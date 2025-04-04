@@ -2,8 +2,8 @@
 // Created by gaeqs on 4/04/25.
 //
 
-#ifndef EDITORELEMENT_H
-#define EDITORELEMENT_H
+#ifndef IMBLUEPRINT_EDITORELEMENT_H
+#define IMBLUEPRINT_EDITORELEMENT_H
 
 #include <optional>
 
@@ -24,4 +24,4 @@ namespace ImBlueprint
 
 } // namespace ImBlueprint
 
-#endif // EDITORELEMENT_H
+#endif // IMBLUEPRINT_EDITORELEMENT_H

@@ -2,8 +2,8 @@
 // Created by gaeqs on 4/04/25.
 //
 
-#ifndef LINK_H
-#define LINK_H
+#ifndef IMBLUEPRINT_LINK_H
+#define IMBLUEPRINT_LINK_H
 
 #include <functional>
 
@@ -40,4 +40,4 @@ struct std::hash<ImBlueprint::Link>
     }
 };
 
-#endif // LINK_H
+#endif // IMBLUEPRINT_LINK_H
