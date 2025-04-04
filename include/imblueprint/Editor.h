@@ -61,9 +61,9 @@ namespace ImBlueprint
         }
 
         template<typename T, typename... Args>
-        void addNode(Args&&... args)
+        Node* addNode(Args&&... args)
         {
-            _nodes.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
+            return _nodes.emplace_back(std::make_unique<T>(std::forward<Args>(args)...)).get();
         }
 
         void removeNode(Node* node);
