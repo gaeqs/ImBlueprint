@@ -5,11 +5,8 @@
 #include <imnodes.h>
 
 #include <atomic>
-#include <map>
 #include <ranges>
 #include <imblueprint/Editor.h>
-
-#include <imblueprint/EditorHandler.h>
 
 namespace
 {
@@ -55,22 +52,23 @@ namespace ImBlueprint
     }
 
     Editor::Editor(Editor&& other) noexcept :
-        _handler(other._handler),
+        _uidProvider(std::move(other._uidProvider)),
+        _nodes(std::move(other._nodes)),
         _minimap(other._minimap),
-        _nodeToRemove(nullptr)
+        _nodeToRemove(other._nodeToRemove)
     {
-        other._handler = new EditorHandler(&other);
-        _handler->editor = this;
     }
 
-    Editor::Editor() :
-        _handler(new EditorHandler(this)),
-        _minimap(false)
+    Editor& Editor::operator=(Editor&& other) noexcept
     {
-        if (CONTEXT_COUNT++ == 0) {
-            ImNodes::CreateContext();
-            ImNodes::GetIO().LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
+        if (this == &other) {
+            return *this;
         }
+        _uidProvider = std::move(other._uidProvider);
+        _nodes = std::move(other._nodes);
+        _minimap = other._minimap;
+        _nodeToRemove = other._nodeToRemove;
+        return *this;
     }
 
     Editor::~Editor()
@@ -78,8 +76,6 @@ namespace ImBlueprint
         if (--CONTEXT_COUNT == 0) {
             ImNodes::DestroyContext();
         }
-
-        delete _handler;
     }
 
     bool Editor::isShowingMinimap() const
@@ -174,21 +170,26 @@ namespace ImBlueprint
 
     void Editor::removeNode(Node* node)
     {
-        erase_if(_nodes, [node](auto& it) {
-            return it.get() == node;
-        });
+        erase_if(_nodes, [node](auto& it) { return it.get() == node; });
     }
 
-
-    Editor& Editor::operator=(Editor&& other) noexcept
+    ImVec2 Editor::getNodePosition(Node* node) const
     {
-        delete _handler;
-        _handler = other._handler;
-        _minimap = other._minimap;
+        ImVec2 res;
+        if (node == nullptr) {
+            return res;
+        }
+        ImNodes::GetNodeGridSpacePos(node->getOrCreateInternalId(_uidProvider));
 
-        other._handler = new EditorHandler(&other);
-        _handler->editor = this;
-        return *this;
+        return res;
+    }
+
+    void Editor::setNodePosition(Node* node, ImVec2 pos)
+    {
+        if (node == nullptr) {
+            return;
+        }
+        ImNodes::SetNodeGridSpacePos(node->getOrCreateInternalId(_uidProvider), pos);
     }
 
 } // namespace ImBlueprint

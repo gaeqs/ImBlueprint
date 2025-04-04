@@ -13,8 +13,6 @@ namespace ImBlueprint
         int _current;
 
       public:
-        UIDProvider(const UIDProvider&) = delete;
-
         UIDProvider();
 
         int nextUID();

@@ -5,8 +5,6 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
-#include "EditorHandler.h"
-
 #include <memory>
 #include <vector>
 
@@ -17,8 +15,7 @@ namespace ImBlueprint
 
     class Editor
     {
-        EditorHandler* _handler;
-        UIDProvider _uidProvider;
+        mutable UIDProvider _uidProvider;
 
         std::vector<std::unique_ptr<Node>> _nodes;
         bool _minimap;
@@ -50,6 +47,16 @@ namespace ImBlueprint
 
         [[nodiscard]] std::optional<std::pair<NodeOutput*, NodeInput*>> findLinkWithInternalId(int id) const;
 
+        auto getNodes() const
+        {
+            return _nodes | std::ranges::views::transform([](auto& it) -> const Node* { return it.get(); });
+        }
+
+        auto getNodes()
+        {
+            return _nodes | std::ranges::views::transform([](auto& it) -> Node* { return it.get(); });
+        }
+
         template<typename T, typename... Args>
         void addNode(Args&&... args)
         {
@@ -57,6 +64,10 @@ namespace ImBlueprint
         }
 
         void removeNode(Node* node);
+
+        [[nodiscard]] ImVec2 getNodePosition(Node* node) const;
+
+        void setNodePosition(Node* node, ImVec2 pos);
     };
 
 } // namespace ImBlueprint

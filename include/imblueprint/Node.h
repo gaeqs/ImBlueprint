@@ -5,13 +5,12 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include "EditorElement.h"
-
 #include <functional>
 #include <memory>
 #include <string>
 #include <map>
 
+#include <imblueprint/EditorElement.h>
 #include <imblueprint/NodeInput.h>
 #include <imblueprint/NodeOutput.h>
 
