@@ -38,6 +38,8 @@ if (NOT DEFINED IMBLUEPRINT_IMGUI_TARGET)
                 ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
                 ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
         )
+
+        target_link_libraries(imgui PUBLIC glfw OpenGL::GL)
     else ()
         add_library(imgui STATIC
                 ${imgui_SOURCE_DIR}/imgui.cpp
@@ -45,6 +47,7 @@ if (NOT DEFINED IMBLUEPRINT_IMGUI_TARGET)
                 ${imgui_SOURCE_DIR}/imgui_tables.cpp
                 ${imgui_SOURCE_DIR}/imgui_widgets.cpp
         )
+
     endif ()
 
     target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR})
