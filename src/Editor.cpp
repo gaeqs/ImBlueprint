@@ -203,4 +203,12 @@ namespace ImBlueprint
         ImNodes::SetNodeGridSpacePos(node->getOrCreateInternalId(_uidProvider), pos);
     }
 
+    void Editor::setNodeScreenPosition(Node* node, ImVec2 pos)
+    {
+        if (node == nullptr) {
+            return;
+        }
+        ImNodes::SetNodeScreenSpacePos(node->getOrCreateInternalId(_uidProvider), pos);
+    }
+
 } // namespace ImBlueprint

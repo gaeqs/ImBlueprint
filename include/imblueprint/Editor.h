@@ -7,6 +7,8 @@
 
 #include <imgui.h>
 
+#include <imgui.h>
+
 #include <memory>
 #include <vector>
 #include <ranges>
@@ -71,6 +73,8 @@ namespace ImBlueprint
         [[nodiscard]] ImVec2 getNodePosition(Node* node) const;
 
         void setNodePosition(Node* node, ImVec2 pos);
+
+        void setNodeScreenPosition(Node* node, ImVec2 pos);
     };
 
 } // namespace ImBlueprint
