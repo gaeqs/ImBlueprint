@@ -49,7 +49,7 @@ namespace ImBlueprint
 
         bool addLink(NodeInput* input);
 
-        void removeLink(NodeInput* input);
+        void removeLink(NodeInput* input, bool emitEmptyInput);
 
         bool willLinkCreateCircularDependency(const NodeInput* input) const;
     };

@@ -23,7 +23,7 @@ namespace ImBlueprint
     NodeInput::~NodeInput()
     {
         if (_output != nullptr) {
-            _output->removeLink(this);
+            _output->removeLink(this, true);
         }
     }
 

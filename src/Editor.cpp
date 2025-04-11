@@ -5,6 +5,7 @@
 #include <imnodes.h>
 
 #include <atomic>
+#include <iostream>
 #include <ranges>
 #include <imblueprint/Editor.h>
 
@@ -127,7 +128,7 @@ namespace ImBlueprint
             auto link = findLinkWithInternalId(linkId);
             if (link) {
                 auto [out, in] = *link;
-                out->removeLink(in);
+                out->removeLink(in, true);
             }
         }
 

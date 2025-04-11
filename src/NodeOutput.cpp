@@ -85,7 +85,7 @@ namespace ImBlueprint
         }
 
         if (oldOutput.has_value()) {
-            oldOutput.value()->removeLink(input);
+            oldOutput.value()->removeLink(input, false);
         }
 
         _links.insert(Link(input));
@@ -95,14 +95,16 @@ namespace ImBlueprint
         return true;
     }
 
-    void NodeOutput::removeLink(NodeInput* input)
+    void NodeOutput::removeLink(NodeInput* input, bool emitEmptyInput)
     {
         if (input == nullptr) {
             return;
         }
         if (_links.erase(Link(input)) > 0) {
             input->setOutput(nullptr);
-            input->onInput({});
+            if (emitEmptyInput) {
+                input->onInput({});
+            }
         }
     }
 
