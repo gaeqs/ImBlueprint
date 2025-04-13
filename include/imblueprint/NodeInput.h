@@ -23,19 +23,25 @@ namespace ImBlueprint
         Node* _node;
         std::string _name;
         std::type_index _type;
-        std::any _value;
-        NodeOutput* _output;
+        bool _multiple;
+        std::unordered_map<NodeOutput*, std::any> _values;
 
       public:
-        NodeInput(Node* node, std::string name, std::type_index type);
+        NodeInput(Node* node, std::string name, std::type_index type, bool multiple);
 
         ~NodeInput();
 
         virtual void render();
 
-        [[nodiscard]] virtual const std::any& getValueAsAny() const;
+        [[nodiscard]] virtual const std::any& getSingleValueAsAny() const;
 
-        virtual void onInput(std::any value);
+        [[nodiscard]] virtual std::vector<const std::any*> getMultipleValuesAsAny() const;
+
+        bool addLink(NodeOutput* output);
+
+        bool removeLink(NodeOutput* output, bool emitEmptyInput);
+
+        virtual void onInput(NodeOutput* output, std::any value);
 
         Node* getNode() const;
 
@@ -43,18 +49,33 @@ namespace ImBlueprint
 
         [[nodiscard]] std::type_index getType() const;
 
-        [[nodiscard]] std::optional<NodeOutput*> getOutput() const;
-
-        void setOutput(NodeOutput* output);
+        [[nodiscard]] bool supportsMultipleInputs() const;
 
         template<typename T>
-        [[nodiscard]] std::optional<T> getValueAs() const
+        [[nodiscard]] std::optional<T> getSingleValueAs() const
         {
-            auto value = std::any_cast<T>(&getValueAsAny());
+            auto value = std::any_cast<T>(&getSingleValueAsAny());
             if (value == nullptr) {
                 return {};
             }
             return *value;
+        }
+
+        template<typename T>
+        [[nodiscard]] std::vector<T> getMultipleValueAs() const
+        {
+            auto raw = getMultipleValuesAsAny();
+            std::vector<T> vector;
+            vector.reserve(raw.size());
+
+            for (auto any : raw) {
+                auto value = std::any_cast<T>(any);
+                if (value != nullptr) {
+                    vector.push_back(*value);
+                }
+            }
+
+            return vector;
         }
     };
 

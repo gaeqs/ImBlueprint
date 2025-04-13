@@ -50,15 +50,25 @@ namespace ImBlueprint
         {
             auto it = _inputs.find(name);
             if (it != _inputs.end()) {
-                return it->second->getValueAs<T>();
+                return it->second->getSingleValueAs<T>();
             }
             return {};
         }
 
         template<typename T>
-        bool defineInput(const std::string& name)
+        std::optional<std::vector<T>> getMultipleInputs(const std::string& name) const
         {
-            return _inputs.insert({name, std::make_unique<NodeInput>(this, name, typeid(T))}).second;
+            auto it = _inputs.find(name);
+            if (it != _inputs.end()) {
+                return it->second->getMultipleValueAs<T>();
+            }
+            return {};
+        }
+
+        template<typename T>
+        bool defineInput(const std::string& name, bool multiple)
+        {
+            return _inputs.insert({name, std::make_unique<NodeInput>(this, name, typeid(T), multiple)}).second;
         }
 
         template<typename T>

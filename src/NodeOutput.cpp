@@ -23,8 +23,7 @@ namespace ImBlueprint
     NodeOutput::~NodeOutput()
     {
         for (auto& link : _links) {
-            link.getInput()->setOutput(nullptr);
-            link.getInput()->onInput({});
+            link.getInput()->removeLink(this, true);
         }
     }
 
@@ -61,7 +60,7 @@ namespace ImBlueprint
             // Output can be modified!
             auto out = getValueAsAny();
             for (auto& link : _links) {
-                link.getInput()->onInput(out);
+                link.getInput()->onInput(this, out);
             }
             return true;
         }
@@ -79,18 +78,9 @@ namespace ImBlueprint
             return false;
         }
 
-        auto oldOutput = input->getOutput();
-        if (oldOutput == this) {
-            return false;
+        if (input->addLink(this)) {
+            _links.insert(Link(input));
         }
-
-        if (oldOutput.has_value()) {
-            oldOutput.value()->removeLink(input, false);
-        }
-
-        _links.insert(Link(input));
-        input->setOutput(this);
-        input->onInput(getValueAsAny());
 
         return true;
     }
@@ -101,10 +91,7 @@ namespace ImBlueprint
             return;
         }
         if (_links.erase(Link(input)) > 0) {
-            input->setOutput(nullptr);
-            if (emitEmptyInput) {
-                input->onInput({});
-            }
+            input->removeLink(this, emitEmptyInput);
         }
     }
 

@@ -16,7 +16,7 @@ class TestNode : public ImBlueprint::Node
     TestNode() :
         Node("Test node")
     {
-        defineInput<int>("Patata");
+        defineInput<int>("Patata", true);
         defineOutput<int>("Pototo");
     }
 };
@@ -30,11 +30,11 @@ class ValueNode : public ImBlueprint::Node
         Node("Value"),
         _value(initial)
     {
-        defineInput<int>("test1");
-        defineInput<int>("test2");
-        defineInput<int>("test3");
-        defineInput<int>("test4");
-        defineInput<int>("test1");
+        defineInput<int>("test1", false);
+        defineInput<int>("test2", false);
+        defineInput<int>("test3", false);
+        defineInput<int>("test4", false);
+        defineInput<int>("test1", false);
         defineOutput<int>("value", _value);
     }
 
@@ -56,8 +56,8 @@ class ValueSum : public ImBlueprint::Node
         Node("Sum"),
         _result(0)
     {
-        defineInput<int>("first");
-        defineInput<int>("second");
+        defineInput<int>("first", false);
+        defineInput<int>("second", true);
         defineOutput<int>("result", _result);
     }
 
@@ -68,9 +68,16 @@ class ValueSum : public ImBlueprint::Node
 
     void onInputChange(const std::string& name, const std::any& value) override
     {
-        auto out = getInput<int>("first").value_or(0) + getInput<int>("second").value_or(0);
-        if (out != _result) {
-            _result = out;
+
+        int result = getInput<int>("first").value_or(0);
+        auto second = getMultipleInputs<int>("second").value_or(std::vector<int>());
+
+        for (int it : second) {
+            result += it;
+        }
+
+        if (result != _result) {
+            _result = result;
             sendOutput("result", _result);
         }
     }
