@@ -66,21 +66,21 @@ namespace ImBlueprint
         }
 
         template<typename T>
-        bool defineInput(const std::string& name, bool multiple)
+        bool defineInput(const std::string& name, bool multiple, PinShape shape = pinShapeForType(typeid(T)))
         {
-            return _inputs.insert({name, std::make_unique<NodeInput>(this, name, typeid(T), multiple)}).second;
+            return _inputs.insert({name, std::make_unique<NodeInput>(this, name, typeid(T), multiple, shape)}).second;
         }
 
         template<typename T>
-        bool defineOutput(const std::string& name)
+        bool defineOutput(const std::string& name, PinShape shape = pinShapeForType(typeid(T)))
         {
-            return _outputs.insert({name, std::make_unique<NodeOutput>(this, name, typeid(T))}).second;
+            return _outputs.insert({name, std::make_unique<NodeOutput>(this, name, typeid(T), shape)}).second;
         }
 
         template<typename T>
-        bool defineOutput(const std::string& name, T initialValue)
+        bool defineOutput(const std::string& name, T initialValue, PinShape shape = pinShapeForType(typeid(T)))
         {
-            auto [it, ok] = _outputs.insert({name, std::make_unique<NodeOutput>(this, name, typeid(T))});
+            auto [it, ok] = _outputs.insert({name, std::make_unique<NodeOutput>(this, name, typeid(T), shape)});
             if (ok) {
                 it->second->setValue(initialValue);
             }

@@ -17,6 +17,8 @@ namespace ImBlueprint
         mutable std::optional<int> _internalId;
 
       public:
+        virtual ~EditorElement() = default;
+
         std::optional<int> getInternalId() const;
 
         int getOrCreateInternalId(UIDProvider& provider) const;

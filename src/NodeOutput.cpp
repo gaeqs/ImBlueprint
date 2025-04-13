@@ -13,10 +13,12 @@
 namespace ImBlueprint
 {
 
-    NodeOutput::NodeOutput(Node* node, std::string name, std::type_index type) :
+    NodeOutput::NodeOutput(Node* node, std::string name, std::type_index type, PinShape shape) :
         _node(node),
         _name(std::move(name)),
-        _type(type)
+        _type(type),
+        _shape(shape),
+        _value(std::any())
     {
     }
 
@@ -45,6 +47,11 @@ namespace ImBlueprint
     std::type_index NodeOutput::getType() const
     {
         return _type;
+    }
+
+    PinShape NodeOutput::getShape() const
+    {
+        return _shape;
     }
 
     const std::any& NodeOutput::getValueAsAny() const

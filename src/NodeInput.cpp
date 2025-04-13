@@ -13,18 +13,23 @@
 namespace ImBlueprint
 {
 
-    NodeInput::NodeInput(Node* node, std::string name, std::type_index type, bool multiple) :
+    NodeInput::NodeInput(Node* node, std::string name, std::type_index type, bool multiple, PinShape shape) :
         _node(node),
         _name(std::move(name)),
         _type(type),
-        _multiple(multiple)
+        _multiple(multiple),
+        _shape(shape)
     {
     }
 
     NodeInput::~NodeInput()
     {
-        for (auto output : _values | std::views::keys) {
-            output->removeLink(this, false);
+        std::vector<NodeOutput*> outputs;
+        for (auto other : _values | std::views::keys) {
+            outputs.push_back(other);
+        }
+        for (auto out : outputs) {
+            out->removeLink(this, false);
         }
     }
 
@@ -54,8 +59,12 @@ namespace ImBlueprint
         }
 
         if (!_multiple) {
+            std::vector<NodeOutput*> outputs;
             for (auto other : _values | std::views::keys) {
-                other->removeLink(this, false);
+                outputs.push_back(other);
+            }
+            for (auto out : outputs) {
+                out->removeLink(this, false);
             }
         }
         auto [it, ok] = _values.insert({output, std::any()});
@@ -113,5 +122,10 @@ namespace ImBlueprint
     bool NodeInput::supportsMultipleInputs() const
     {
         return _multiple;
+    }
+
+    PinShape NodeInput::getShape() const
+    {
+        return _shape;
     }
 } // namespace ImBlueprint

@@ -25,7 +25,7 @@ namespace ImBlueprint
         node->renderTitle([this, node]() { _nodeToRemove = node; });
 
         for (const auto& input : node->getInputs() | std::views::values) {
-            ImNodes::BeginInputAttribute(input->getOrCreateInternalId(_uidProvider));
+            ImNodes::BeginInputAttribute(input->getOrCreateInternalId(_uidProvider), toImNodesShape(input->getShape()));
             input->render();
             ImNodes::EndInputAttribute();
         }
@@ -35,7 +35,8 @@ namespace ImBlueprint
         node->renderBody();
 
         for (const auto& output : node->getOutputs() | std::views::values) {
-            ImNodes::BeginOutputAttribute(output->getOrCreateInternalId(_uidProvider));
+            ImNodes::BeginOutputAttribute(output->getOrCreateInternalId(_uidProvider),
+                                          toImNodesShape(output->getShape()));
             output->render();
             ImNodes::EndInputAttribute();
         }

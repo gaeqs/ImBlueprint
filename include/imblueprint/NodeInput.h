@@ -11,6 +11,7 @@
 #include <typeindex>
 
 #include <imblueprint/EditorElement.h>
+#include <imblueprint/PinShape.h>
 
 namespace ImBlueprint
 {
@@ -24,10 +25,11 @@ namespace ImBlueprint
         std::string _name;
         std::type_index _type;
         bool _multiple;
+        PinShape _shape;
         std::unordered_map<NodeOutput*, std::any> _values;
 
       public:
-        NodeInput(Node* node, std::string name, std::type_index type, bool multiple);
+        NodeInput(Node* node, std::string name, std::type_index type, bool multiple, PinShape shape);
 
         ~NodeInput();
 
@@ -51,12 +53,14 @@ namespace ImBlueprint
 
         [[nodiscard]] bool supportsMultipleInputs() const;
 
+        [[nodiscard]] PinShape getShape() const;
+
         template<typename T>
         [[nodiscard]] std::optional<T> getSingleValueAs() const
         {
             auto value = std::any_cast<T>(&getSingleValueAsAny());
             if (value == nullptr) {
-                return {};
+                return std::optional<T>();
             }
             return *value;
         }

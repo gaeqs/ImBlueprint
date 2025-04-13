@@ -10,69 +10,64 @@
     #define GL_SILENCE_DEPRECATION
 #endif
 
-class TestNode : public ImBlueprint::Node
-{
-  public:
-    TestNode() :
-        Node("Test node")
-    {
-        defineInput<int>("Patata", true);
-        defineOutput<int>("Pototo");
-    }
-};
-
+template<typename T>
 class ValueNode : public ImBlueprint::Node
 {
-    int _value;
+    T _value;
 
   public:
-    explicit ValueNode(int initial) :
+    explicit ValueNode(T initial) :
         Node("Value"),
         _value(initial)
     {
-        defineInput<int>("test1", false);
-        defineInput<int>("test2", false);
-        defineInput<int>("test3", false);
-        defineInput<int>("test4", false);
-        defineInput<int>("test1", false);
-        defineOutput<int>("value", _value);
+        defineOutput<T>("value", _value);
     }
 
     void renderBody() override
     {
         ImGui::SetNextItemWidth(100);
-        if (ImGui::InputInt("Value", &_value)) {
-            sendOutput("value", _value);
+        if constexpr (std::is_same_v<T, int>) {
+            if (ImGui::InputInt("Value", &_value)) {
+                sendOutput("value", _value);
+            }
+        } else if constexpr (std::is_same_v<T, float>) {
+            if (ImGui::InputFloat("Value", &_value)) {
+                sendOutput("value", _value);
+            }
         }
     }
 };
 
+template<typename T>
 class ValueSum : public ImBlueprint::Node
 {
-    int _result;
+    T _result;
 
   public:
     ValueSum() :
         Node("Sum"),
         _result(0)
     {
-        defineInput<int>("first", false);
-        defineInput<int>("second", true);
-        defineOutput<int>("result", _result);
+        defineInput<T>("first", false);
+        defineInput<T>("second", true);
+        defineOutput<T>("result", _result);
     }
 
     void renderBody() override
     {
-        ImGui::Text("Current result: %d", _result);
+        if constexpr (std::is_same_v<T, int>) {
+            ImGui::Text("Current result: %d", _result);
+        } else if constexpr (std::is_same_v<T, float>) {
+            ImGui::Text("Current result: %f", _result);
+        }
     }
 
     void onInputChange(const std::string& name, const std::any& value) override
     {
+        T result = getInput<T>("first").value_or(0);
+        auto second = getMultipleInputs<T>("second").value_or(std::vector<T>());
 
-        int result = getInput<int>("first").value_or(0);
-        auto second = getMultipleInputs<int>("second").value_or(std::vector<int>());
-
-        for (int it : second) {
+        for (T it : second) {
             result += it;
         }
 
@@ -80,6 +75,31 @@ class ValueSum : public ImBlueprint::Node
             _result = result;
             sendOutput("result", _result);
         }
+    }
+};
+
+template<typename From, typename To>
+class ValueCast : public ImBlueprint::Node
+
+{
+  public:
+    ValueCast() :
+        Node("Cast")
+    {
+        defineInput<From>("from", false);
+        defineOutput<To>("to");
+    }
+
+    void onInputChange(const std::string& name, const std::any& value) override
+    {
+        auto from = getInput<From>("from");
+        if (!from.has_value()) {
+            sendOutput("to", std::any());
+            return;
+        }
+
+        To to = static_cast<To>(from.value());
+        sendOutput("to", to);
     }
 };
 
@@ -117,13 +137,29 @@ int main(int, char**)
     ImGui_ImplOpenGL3_Init("#version 330");
 
     ImBlueprint::Editor editor;
-    editor.addNode<ValueNode>(5);
-    editor.addNode<ValueNode>(10);
-    editor.addNode<ValueNode>(15);
-    editor.addNode<ValueSum>();
-    editor.addNode<ValueSum>();
-    editor.addNode<ValueSum>();
-    editor.addNode<ValueSum>();
+    editor.addNode<ValueNode<int>>(5);
+    editor.addNode<ValueNode<int>>(10);
+    editor.addNode<ValueNode<int>>(15);
+
+    editor.addNode<ValueNode<float>>(5);
+    editor.addNode<ValueNode<float>>(10);
+    editor.addNode<ValueNode<float>>(15);
+
+    editor.addNode<ValueSum<int>>();
+    editor.addNode<ValueSum<int>>();
+    editor.addNode<ValueSum<int>>();
+    editor.addNode<ValueSum<int>>();
+
+    editor.addNode<ValueSum<float>>();
+    editor.addNode<ValueSum<float>>();
+    editor.addNode<ValueSum<float>>();
+    editor.addNode<ValueSum<float>>();
+
+    editor.addNode<ValueCast<int, float>>();
+    editor.addNode<ValueCast<int, float>>();
+
+    editor.addNode<ValueCast<float, int>>();
+    editor.addNode<ValueCast<float, int>>();
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
