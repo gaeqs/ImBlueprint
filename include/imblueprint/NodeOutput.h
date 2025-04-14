@@ -12,7 +12,7 @@
 
 #include <imblueprint/Link.h>
 #include <imblueprint/EditorElement.h>
-#include <imblueprint/PinShape.h>
+#include <imblueprint/PinStyle.h>
 
 namespace ImBlueprint
 {
@@ -25,13 +25,13 @@ namespace ImBlueprint
         Node* _node;
         std::string _name;
         std::type_index _type;
-        PinShape _shape;
+        PinStyle _style;
         std::any _value;
 
         std::unordered_set<Link> _links;
 
       public:
-        NodeOutput(Node* node, std::string name, std::type_index type, PinShape shape);
+        NodeOutput(Node* node, std::string name, std::type_index type, PinStyle style);
 
         ~NodeOutput() override;
 
@@ -43,7 +43,9 @@ namespace ImBlueprint
 
         [[nodiscard]] std::type_index getType() const;
 
-        [[nodiscard]] PinShape getShape() const;
+        [[nodiscard]] PinStyle& getStyle();
+
+        [[nodiscard]] const PinStyle& getStyle() const;
 
         [[nodiscard]] const std::any& getValueAsAny() const;
 

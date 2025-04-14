@@ -8,6 +8,7 @@
 #include "imnodes.h"
 
 #include <cstdint>
+#include <optional>
 
 #include <typeindex>
 
@@ -26,9 +27,21 @@ namespace ImBlueprint
         FILLED_QUAD = 5
     };
 
+    struct PinStyle
+    {
+        PinShape shape;
+        uint32_t color;
+
+        PinStyle();
+
+        PinStyle(PinShape shape, uint32_t color);
+    };
+
     ImNodesPinShape_ toImNodesShape(PinShape shape);
 
     PinShape pinShapeForType(const std::type_index& type);
+
+    uint32_t pinColorForType(const std::type_index& type);
 
 } // namespace ImBlueprint
 

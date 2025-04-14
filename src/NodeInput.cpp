@@ -13,12 +13,12 @@
 namespace ImBlueprint
 {
 
-    NodeInput::NodeInput(Node* node, std::string name, std::type_index type, bool multiple, PinShape shape) :
+    NodeInput::NodeInput(Node* node, std::string name, std::type_index type, bool multiple, PinStyle style) :
         _node(node),
         _name(std::move(name)),
         _type(type),
         _multiple(multiple),
-        _shape(shape)
+        _style(style)
     {
     }
 
@@ -124,8 +124,13 @@ namespace ImBlueprint
         return _multiple;
     }
 
-    PinShape NodeInput::getShape() const
+    PinStyle& NodeInput::getStyle()
     {
-        return _shape;
+        return _style;
+    }
+
+    const PinStyle& NodeInput::getStyle() const
+    {
+        return _style;
     }
 } // namespace ImBlueprint

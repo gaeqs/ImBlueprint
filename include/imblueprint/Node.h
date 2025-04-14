@@ -66,21 +66,27 @@ namespace ImBlueprint
         }
 
         template<typename T>
-        bool defineInput(const std::string& name, bool multiple, PinShape shape = pinShapeForType(typeid(T)))
+        bool defineInput(const std::string& name, bool multiple, PinShape shape = pinShapeForType(typeid(T)),
+                         uint32_t color = pinColorForType(typeid(T)))
         {
-            return _inputs.insert({name, std::make_unique<NodeInput>(this, name, typeid(T), multiple, shape)}).second;
+            PinStyle style(shape, color);
+            return _inputs.insert({name, std::make_unique<NodeInput>(this, name, typeid(T), multiple, style)}).second;
         }
 
         template<typename T>
-        bool defineOutput(const std::string& name, PinShape shape = pinShapeForType(typeid(T)))
+        bool defineOutput(const std::string& name, PinShape shape = pinShapeForType(typeid(T)),
+                          uint32_t color = pinColorForType(typeid(T)))
         {
-            return _outputs.insert({name, std::make_unique<NodeOutput>(this, name, typeid(T), shape)}).second;
+            PinStyle style = PinStyle(shape, color);
+            return _outputs.insert({name, std::make_unique<NodeOutput>(this, name, typeid(T), style)}).second;
         }
 
         template<typename T>
-        bool defineOutput(const std::string& name, T initialValue, PinShape shape = pinShapeForType(typeid(T)))
+        bool defineOutput(const std::string& name, T initialValue, PinShape shape = pinShapeForType(typeid(T)),
+                          uint32_t color = pinColorForType(typeid(T)))
         {
-            auto [it, ok] = _outputs.insert({name, std::make_unique<NodeOutput>(this, name, typeid(T), shape)});
+            PinStyle style = PinStyle(shape, color);
+            auto [it, ok] = _outputs.insert({name, std::make_unique<NodeOutput>(this, name, typeid(T), style)});
             if (ok) {
                 it->second->setValue(initialValue);
             }

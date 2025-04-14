@@ -25,9 +25,12 @@ namespace ImBlueprint
         node->renderTitle([this, node]() { _nodeToRemove = node; });
 
         for (const auto& input : node->getInputs() | std::views::values) {
-            ImNodes::BeginInputAttribute(input->getOrCreateInternalId(_uidProvider), toImNodesShape(input->getShape()));
+            auto& style = input->getStyle();
+            ImNodes::PushColorStyle(ImNodesCol_Pin, style.color);
+            ImNodes::BeginInputAttribute(input->getOrCreateInternalId(_uidProvider), toImNodesShape(style.shape));
             input->render();
             ImNodes::EndInputAttribute();
+            ImNodes::PopColorStyle();
         }
 
         ImNodes::EndNodeTitleBar();
@@ -35,10 +38,12 @@ namespace ImBlueprint
         node->renderBody();
 
         for (const auto& output : node->getOutputs() | std::views::values) {
-            ImNodes::BeginOutputAttribute(output->getOrCreateInternalId(_uidProvider),
-                                          toImNodesShape(output->getShape()));
+            auto& style = output->getStyle();
+            ImNodes::PushColorStyle(ImNodesCol_Pin, style.color);
+            ImNodes::BeginOutputAttribute(output->getOrCreateInternalId(_uidProvider), toImNodesShape(style.shape));
             output->render();
             ImNodes::EndInputAttribute();
+            ImNodes::PopColorStyle();
         }
 
         ImNodes::EndNode();

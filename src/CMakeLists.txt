@@ -24,7 +24,7 @@ target_sources(imblueprint PRIVATE
         UIDProvider.cpp
         EditorElement.cpp
         Link.cpp
-        PinShape.cpp
+        PinStyle.cpp
 )
 
 target_include_directories(imblueprint PUBLIC
