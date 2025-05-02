@@ -61,7 +61,8 @@ if (NOT DEFINED IMBLUEPRINT_IMNODES_TARGET)
     FetchContent_Declare(
             imnodes
             GIT_REPOSITORY https://github.com/gaeqs/imnodes.git
-            GIT_TAG 2e8da7a077eb48463976ce000da3d45ebc430a17
+            GIT_TAG zoom2
+            SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/imnodes
     )
 
     FetchContent_MakeAvailable(imnodes)

@@ -220,7 +220,8 @@ namespace ImBlueprint
         if (node == nullptr) {
             return;
         }
-        ImNodes::SetNodeScreenSpacePos(node->getOrCreateInternalId(_uidProvider), pos);
+        pos = ImNodes::ConvertToEditorContextSpace(pos);
+        ImNodes::SetNodeEditorSpacePos(node->getOrCreateInternalId(_uidProvider), pos);
     }
 
 } // namespace ImBlueprint
