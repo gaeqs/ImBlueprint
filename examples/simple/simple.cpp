@@ -137,6 +137,7 @@ int main(int, char**)
     ImGui_ImplOpenGL3_Init("#version 330");
 
     ImBlueprint::Editor editor;
+    editor.showMinimap(true);
     editor.addNode<ValueNode<int>>(5);
     editor.addNode<ValueNode<int>>(10);
     editor.addNode<ValueNode<int>>(15);

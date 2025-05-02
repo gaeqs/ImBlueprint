@@ -60,8 +60,8 @@ if (NOT DEFINED IMBLUEPRINT_IMNODES_TARGET)
     message("IMBLUEPRINT_IMNODES_TARGET not defined. Downloading and creating imnodes target")
     FetchContent_Declare(
             imnodes
-            GIT_REPOSITORY https://github.com/Nelarius/imnodes.git
-            GIT_TAG 8563e1655bd9bb1f249e6552cc6274d506ee788b
+            GIT_REPOSITORY https://github.com/gaeqs/imnodes.git
+            GIT_TAG 7d726a1ac62b6e4fd7be987136a351f2b1e77a9b
     )
 
     FetchContent_MakeAvailable(imnodes)

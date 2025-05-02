@@ -142,6 +142,12 @@ namespace ImBlueprint
             removeNode(_nodeToRemove);
             _nodeToRemove = nullptr;
         }
+
+        if( ImNodes::IsEditorHovered() && ImGui::GetIO().MouseWheel != 0 )
+        {
+            float zoom = ImNodes::EditorContextGetZoom() + ImGui::GetIO().MouseWheel * 0.1f;
+            ImNodes::EditorContextSetZoom( zoom, ImGui::GetMousePos() );
+        }
     }
 
     std::optional<NodeInput*> Editor::findInputWithInternalId(int id) const
