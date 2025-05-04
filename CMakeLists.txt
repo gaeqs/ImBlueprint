@@ -62,7 +62,6 @@ if (NOT DEFINED IMBLUEPRINT_IMNODES_TARGET)
             imnodes
             GIT_REPOSITORY https://github.com/gaeqs/imnodes.git
             GIT_TAG zoom2
-            SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/imnodes
     )
 
     FetchContent_MakeAvailable(imnodes)
@@ -96,3 +95,14 @@ add_subdirectory(src)
 if (IMBLUEPRINT_EXAMPLES)
     add_subdirectory(examples)
 endif ()
+
+# Install public headers
+install(
+        DIRECTORY include/imblueprint
+        DESTINATION include
+)
+
+install(
+        DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/generated/imblueprint
+        DESTINATION include
+)
