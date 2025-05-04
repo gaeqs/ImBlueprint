@@ -103,6 +103,6 @@ install(
 )
 
 install(
-        DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/generated/imblueprint
+        DIRECTORY ${IMBLUEPRINT_GENERATED_DIR}/imblueprint
         DESTINATION include
 )
