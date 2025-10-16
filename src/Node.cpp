@@ -25,12 +25,17 @@ namespace ImBlueprint
 
     void Node::renderTitle(std::function<void()> closeAction)
     {
-        ImGui::TextUnformatted(_name.c_str());
         if (closeAction != nullptr) {
+            ImGui::PushStyleColor(ImGuiCol_Button, 0);
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, 0);
+            ImGui::PushStyleColor(ImGuiCol_ButtonActive, 0);
             if (ImGui::Button("X", ImVec2(20, 20))) {
                 closeAction();
             }
+            ImGui::PopStyleColor(3);
+            ImGui::SameLine();
         }
+        ImGui::TextUnformatted(_name.c_str());
     }
 
     void Node::renderBody()
