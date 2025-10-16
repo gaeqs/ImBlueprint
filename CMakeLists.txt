@@ -69,7 +69,7 @@ if (NOT DEFINED IMBLUEPRINT_IMNODES_TARGET)
     FetchContent_Declare(
             imnodes
             GIT_REPOSITORY https://github.com/gaeqs/imnodes.git
-            GIT_TAG 8563e1655bd9bb1f249e6552cc6274d506ee788b
+            GIT_TAG d514ad4e80bce933dc5e1c2e3f21ac1c94d33080
             SOURCE_DIR ${PROJECT_SOURCE_DIR}/lib/imnodes
     )
 
