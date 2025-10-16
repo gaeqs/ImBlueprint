@@ -25,7 +25,7 @@ if (NOT DEFINED IMBLUEPRINT_IMGUI_TARGET)
     FetchContent_Declare(
             imgui
             GIT_REPOSITORY https://github.com/ocornut/imgui.git
-            GIT_TAG b4bd596a393f09eb39c8fa9cf1b4430dbe6272b0
+            GIT_TAG 44aa9a4b3a6f27d09a4eb5770d095cbd376dfc4b
     )
 
     FetchContent_MakeAvailable(imgui)
@@ -69,7 +69,7 @@ if (NOT DEFINED IMBLUEPRINT_IMNODES_TARGET)
     FetchContent_Declare(
             imnodes
             GIT_REPOSITORY https://github.com/gaeqs/imnodes.git
-            GIT_TAG d514ad4e80bce933dc5e1c2e3f21ac1c94d33080
+            GIT_TAG 097a9fc0ee2433af34bfec56d4f74ad357d0aa7d
             SOURCE_DIR ${PROJECT_SOURCE_DIR}/lib/imnodes
     )
 
