@@ -108,3 +108,14 @@ add_subdirectory(src)
 if (IMBLUEPRINT_EXAMPLES)
     add_subdirectory(examples)
 endif ()
+
+# Install public headers
+install(
+        DIRECTORY include/imblueprint
+        DESTINATION include
+)
+
+install(
+        DIRECTORY ${IMBLUEPRINT_GENERATED_DIR}/imblueprint
+        DESTINATION include
+)
