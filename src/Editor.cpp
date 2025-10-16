@@ -122,6 +122,8 @@ namespace ImBlueprint
             ImNodes::GetStyle().Colors[ImNodesCol_GridBackground] = IM_COL32(36, 35, 44, 255);
             ImNodes::GetStyle().Colors[ImNodesCol_GridLine] = IM_COL32(53, 52, 60, 255);
             ImNodes::GetStyle().Colors[ImNodesCol_GridLinePrimary] = IM_COL32(60, 60, 65, 255);
+
+            ImNodes::GetIO().LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
         }
     }
 
@@ -180,10 +182,9 @@ namespace ImBlueprint
             _nodeToRemove = nullptr;
         }
 
-        if( ImNodes::IsEditorHovered() && ImGui::GetIO().MouseWheel != 0 )
-        {
+        if (ImNodes::IsEditorHovered() && ImGui::GetIO().MouseWheel != 0) {
             float zoom = ImNodes::EditorContextGetZoom() + ImGui::GetIO().MouseWheel * 0.1f;
-            ImNodes::EditorContextSetZoom( zoom, ImGui::GetMousePos() );
+            ImNodes::EditorContextSetZoom(zoom, ImGui::GetMousePos());
         }
     }
 
