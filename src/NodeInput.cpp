@@ -91,11 +91,6 @@ namespace ImBlueprint
         return true;
     }
 
-    void NodeInput::render()
-    {
-        ImGui::Text(_name.c_str());
-    }
-
     void NodeInput::onInput(NodeOutput* output, std::any value)
     {
         if (auto it = _values.find(output); it != _values.end()) {

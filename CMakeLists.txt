@@ -17,6 +17,7 @@ set(IMBLUEPRINT_SINGLE_HEADER_PATH ${CMAKE_BINARY_DIR}/generated/imblueprint/imb
 if (IMBLUEPRINT_EXAMPLES)
     find_package(glfw3 REQUIRED)
     find_package(OpenGL REQUIRED)
+    find_package(SDL2 CONFIG REQUIRED)
 endif ()
 
 if (NOT DEFINED IMBLUEPRINT_IMGUI_TARGET)
@@ -37,9 +38,16 @@ if (NOT DEFINED IMBLUEPRINT_IMGUI_TARGET)
                 ${imgui_SOURCE_DIR}/imgui_widgets.cpp
                 ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
                 ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+                ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl2.cpp
+        )
+        target_include_directories(imgui PUBLIC
+                $<BUILD_INTERFACE:${imgui_SOURCE_DIR}/src>
+                $<BUILD_INTERFACE:${imgui_SOURCE_DIR}/backends>
+                $<INSTALL_INTERFACE:>
         )
 
-        target_link_libraries(imgui PUBLIC glfw OpenGL::GL)
+        target_include_directories(imgui PUBLIC ${SDL2_INCLUDE_DIRS})
+        target_link_libraries(imgui PUBLIC glfw OpenGL::GL SDL2::SDL2)
     else ()
         add_library(imgui STATIC
                 ${imgui_SOURCE_DIR}/imgui.cpp
@@ -60,9 +68,14 @@ if (NOT DEFINED IMBLUEPRINT_IMNODES_TARGET)
     message("IMBLUEPRINT_IMNODES_TARGET not defined. Downloading and creating imnodes target")
     FetchContent_Declare(
             imnodes
-            GIT_REPOSITORY https://github.com/Nelarius/imnodes.git
+            GIT_REPOSITORY https://github.com/gaeqs/imnodes.git
             GIT_TAG 8563e1655bd9bb1f249e6552cc6274d506ee788b
+            SOURCE_DIR ${PROJECT_SOURCE_DIR}/lib/imnodes
     )
+
+    if (IMBLUEPRINT_EXAMPLES)
+        set(IMNODES_EXAMPLES ON)
+    endif ()
 
     FetchContent_MakeAvailable(imnodes)
     set(IMBLUEPRINT_IMNODES_TARGET imnodes)

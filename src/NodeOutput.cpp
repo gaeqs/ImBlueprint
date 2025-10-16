@@ -29,11 +29,6 @@ namespace ImBlueprint
         }
     }
 
-    void NodeOutput::render()
-    {
-        ImGui::Text(_name.c_str());
-    }
-
     Node* NodeOutput::getNode() const
     {
         return _node;

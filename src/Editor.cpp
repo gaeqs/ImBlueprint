@@ -21,30 +21,36 @@ namespace ImBlueprint
     void Editor::renderNode(Node* node)
     {
         ImNodes::BeginNode(node->getOrCreateInternalId(_uidProvider));
+
         ImNodes::BeginNodeTitleBar();
         node->renderTitle([this, node]() { _nodeToRemove = node; });
+        ImNodes::EndNodeTitleBar();
 
         for (const auto& input : node->getInputs() | std::views::values) {
             auto& style = input->getStyle();
             ImNodes::PushColorStyle(ImNodesCol_Pin, style.color);
-            ImNodes::BeginInputAttribute(input->getOrCreateInternalId(_uidProvider), toImNodesShape(style.shape));
-            input->render();
-            ImNodes::EndInputAttribute();
+            ImNodes::SetupInputAttribute(input->getOrCreateInternalId(_uidProvider), input->getName(),
+                                         toImNodesShape(style.shape));
             ImNodes::PopColorStyle();
         }
-
-        ImNodes::EndNodeTitleBar();
-
-        node->renderBody();
 
         for (const auto& output : node->getOutputs() | std::views::values) {
             auto& style = output->getStyle();
             ImNodes::PushColorStyle(ImNodesCol_Pin, style.color);
-            ImNodes::BeginOutputAttribute(output->getOrCreateInternalId(_uidProvider), toImNodesShape(style.shape));
-            output->render();
-            ImNodes::EndInputAttribute();
+            ImNodes::SetupOutputAttribute(output->getOrCreateInternalId(_uidProvider), output->getName(),
+                                          toImNodesShape(style.shape));
             ImNodes::PopColorStyle();
         }
+
+        ImNodes::DrawInputAttributes();
+        ImGui::SameLine();
+
+        ImGui::BeginGroup();
+        node->renderBody();
+        ImGui::EndGroup();
+        ImGui::SameLine();
+
+        ImNodes::DrawOutputAttributes();
 
         ImNodes::EndNode();
 
@@ -84,7 +90,38 @@ namespace ImBlueprint
     {
         if (CONTEXT_COUNT++ == 0) {
             ImNodes::CreateContext();
-            ImNodes::GetIO().LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
+            // ImNodes::GetIO().LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
+            // ImNodes::GetStyle().NodeCornerRounding = 8.0f;
+            // ImNodes::GetStyle().Flags -= ImNodesStyleFlags_NodeOutline;
+            // ImNodes::GetStyle().Colors[ImNodesCol_TitleBar] = IM_COL32(255, 0, 0, 255);
+
+            ImNodesStyle& style = ImNodes::GetStyle();
+            style.Flags |= ImNodesStyleFlags_GridLinesPrimary | ImNodesStyleFlags_GridSnapping;
+            style.Flags &= ~ImNodesStyleFlags_NodeOutline;
+            style.GridSpacing = 24.f;
+
+            ImNodes::GetStyle().Colors[ImNodesCol_NodeBackground] = IM_COL32(59, 59, 59, 255);
+            ImNodes::GetStyle().Colors[ImNodesCol_NodeBackgroundHovered] = IM_COL32(70, 70, 70, 255);
+            ImNodes::GetStyle().Colors[ImNodesCol_NodeBackgroundSelected] = IM_COL32(80, 80, 80, 255);
+            ImNodes::GetStyle().Colors[ImNodesCol_NodeOutline] = IM_COL32(80, 80, 85, 255);
+
+            ImNodes::GetStyle().Colors[ImNodesCol_TitleBar] = IM_COL32(234, 37, 81, 255);
+            ImNodes::GetStyle().Colors[ImNodesCol_TitleBarHovered] = IM_COL32(234, 37, 81, 255);
+            ImNodes::GetStyle().Colors[ImNodesCol_TitleBarSelected] = IM_COL32(234, 37, 81, 255);
+
+            ImNodes::GetStyle().Colors[ImNodesCol_Link] = IM_COL32(82, 136, 182, 200);
+            ImNodes::GetStyle().Colors[ImNodesCol_LinkHovered] = IM_COL32(50, 152, 224, 255);
+            ImNodes::GetStyle().Colors[ImNodesCol_LinkSelected] = IM_COL32(50, 152, 224, 255);
+
+            ImNodes::GetStyle().Colors[ImNodesCol_Pin] = IM_COL32(180, 180, 185, 255);
+            ImNodes::GetStyle().Colors[ImNodesCol_PinHovered] = IM_COL32(255, 255, 255, 255);
+
+            ImNodes::GetStyle().Colors[ImNodesCol_BoxSelector] = IM_COL32(0, 122, 204, 50);
+            ImNodes::GetStyle().Colors[ImNodesCol_BoxSelectorOutline] = IM_COL32(0, 122, 204, 150);
+
+            ImNodes::GetStyle().Colors[ImNodesCol_GridBackground] = IM_COL32(36, 35, 44, 255);
+            ImNodes::GetStyle().Colors[ImNodesCol_GridLine] = IM_COL32(53, 52, 60, 255);
+            ImNodes::GetStyle().Colors[ImNodesCol_GridLinePrimary] = IM_COL32(60, 60, 65, 255);
         }
     }
 

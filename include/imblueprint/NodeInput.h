@@ -33,8 +33,6 @@ namespace ImBlueprint
 
         ~NodeInput();
 
-        virtual void render();
-
         [[nodiscard]] virtual const std::any& getSingleValueAsAny() const;
 
         [[nodiscard]] virtual std::vector<const std::any*> getMultipleValuesAsAny() const;

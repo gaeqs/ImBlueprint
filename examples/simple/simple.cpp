@@ -38,6 +38,18 @@ class ValueNode : public ImBlueprint::Node
     }
 };
 
+class NodeWithAVeryLongTitle : public ImBlueprint::Node
+{
+  public:
+    explicit NodeWithAVeryLongTitle() :
+        Node("Node with a very long title")
+    {
+        defineOutput<float>("First");
+        defineOutput<float>("Second");
+        defineOutput<float>("Third");
+    }
+};
+
 template<typename T>
 class ValueSum : public ImBlueprint::Node
 {
@@ -137,28 +149,18 @@ int main(int, char**)
     ImGui_ImplOpenGL3_Init("#version 330");
 
     ImBlueprint::Editor editor;
+
+    editor.addNode<NodeWithAVeryLongTitle>();
     editor.addNode<ValueNode<int>>(5);
-    editor.addNode<ValueNode<int>>(10);
-    editor.addNode<ValueNode<int>>(15);
 
     editor.addNode<ValueNode<float>>(5);
-    editor.addNode<ValueNode<float>>(10);
-    editor.addNode<ValueNode<float>>(15);
 
     editor.addNode<ValueSum<int>>();
-    editor.addNode<ValueSum<int>>();
-    editor.addNode<ValueSum<int>>();
-    editor.addNode<ValueSum<int>>();
 
-    editor.addNode<ValueSum<float>>();
-    editor.addNode<ValueSum<float>>();
-    editor.addNode<ValueSum<float>>();
     editor.addNode<ValueSum<float>>();
 
     editor.addNode<ValueCast<int, float>>();
-    editor.addNode<ValueCast<int, float>>();
 
-    editor.addNode<ValueCast<float, int>>();
     editor.addNode<ValueCast<float, int>>();
 
     while (!glfwWindowShouldClose(window)) {

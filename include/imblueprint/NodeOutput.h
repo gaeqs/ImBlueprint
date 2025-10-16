@@ -35,8 +35,6 @@ namespace ImBlueprint
 
         ~NodeOutput() override;
 
-        virtual void render();
-
         Node* getNode() const;
 
         [[nodiscard]] const std::string& getName() const;

@@ -27,7 +27,6 @@ namespace ImBlueprint
     {
         ImGui::TextUnformatted(_name.c_str());
         if (closeAction != nullptr) {
-            ImGui::SameLine(0, 100);
             if (ImGui::Button("X", ImVec2(20, 20))) {
                 closeAction();
             }
@@ -36,7 +35,6 @@ namespace ImBlueprint
 
     void Node::renderBody()
     {
-        ImGui::Dummy(ImVec2(50, 20));
     }
 
     const std::string& Node::getName() const
