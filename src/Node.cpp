@@ -35,6 +35,7 @@ namespace ImBlueprint
 
     void Node::renderBody()
     {
+        ImGui::Dummy(ImVec2(0, 0));
     }
 
     const std::string& Node::getName() const

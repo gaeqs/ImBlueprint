@@ -42,15 +42,19 @@ namespace ImBlueprint
             ImNodes::PopColorStyle();
         }
 
-        ImNodes::DrawInputAttributes();
-        ImGui::SameLine();
+        if (!node->getInputs().empty()) {
+            ImNodes::DrawInputAttributes();
+            ImGui::SameLine();
+        }
 
         ImGui::BeginGroup();
         node->renderBody();
         ImGui::EndGroup();
         ImGui::SameLine();
 
-        ImNodes::DrawOutputAttributes();
+        if (!node->getOutputs().empty()) {
+            ImNodes::DrawOutputAttributes();
+        }
 
         ImNodes::EndNode();
 
