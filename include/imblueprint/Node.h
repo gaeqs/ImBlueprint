@@ -17,27 +17,58 @@
 namespace ImBlueprint
 {
 
+    struct NodeTitleStyleEntry
+    {
+        uint32_t topLeft;
+        uint32_t topRight;
+        uint32_t bottomLeft;
+        uint32_t bottomRight;
+
+        explicit NodeTitleStyleEntry(uint32_t color);
+
+        explicit NodeTitleStyleEntry(uint32_t topLeft, uint32_t topRight, uint32_t bottomLeft, uint32_t bottomRight);
+    };
+
+    struct NodeTitleStyle
+    {
+        NodeTitleStyleEntry normal;
+        NodeTitleStyleEntry hover;
+        NodeTitleStyleEntry selected;
+
+        NodeTitleStyle();
+
+        NodeTitleStyle(NodeTitleStyleEntry normal, NodeTitleStyleEntry hover, NodeTitleStyleEntry selected);
+    };
+
     class Node : public EditorElement
     {
         std::string _name;
+        NodeTitleStyle _titleStyle;
 
         std::map<std::string, std::unique_ptr<NodeInput>> _inputs;
         std::map<std::string, std::unique_ptr<NodeOutput>> _outputs;
+
+      protected:
+        void setTitleStyle(NodeTitleStyle titleStyle);
 
       public:
         Node(const Node& other) = delete;
 
         explicit Node(std::string name);
 
-        virtual ~Node();
+        explicit Node(std::string name, NodeTitleStyle titleStyle);
+
+        ~Node() override;
 
         virtual void onInputChange(const std::string& name, const std::any& value);
 
-        virtual void renderTitle(std::function<void()> closeAction);
+        virtual void renderTitle();
 
         virtual void renderBody();
 
         [[nodiscard]] const std::string& getName() const;
+
+        [[nodiscard]] const NodeTitleStyle& getTitleStyle() const;
 
         [[nodiscard]] const std::map<std::string, std::unique_ptr<NodeInput>>& getInputs() const;
 
@@ -66,7 +97,7 @@ namespace ImBlueprint
         }
 
         template<typename T>
-        bool defineInput(const std::string& name, bool multiple, PinShape shape = pinShapeForType(typeid(T)),
+        bool defineInput(const std::string& name, bool multiple, PinShape shape = PinShape::CIRCLE,
                          uint32_t color = pinColorForType(typeid(T)))
         {
             PinStyle style(shape, color);
@@ -74,7 +105,7 @@ namespace ImBlueprint
         }
 
         template<typename T>
-        bool defineOutput(const std::string& name, PinShape shape = pinShapeForType(typeid(T)),
+        bool defineOutput(const std::string& name, PinShape shape = PinShape::CIRCLE,
                           uint32_t color = pinColorForType(typeid(T)))
         {
             PinStyle style = PinStyle(shape, color);
@@ -82,7 +113,7 @@ namespace ImBlueprint
         }
 
         template<typename T>
-        bool defineOutput(const std::string& name, T initialValue, PinShape shape = pinShapeForType(typeid(T)),
+        bool defineOutput(const std::string& name, T initialValue, PinShape shape = PinShape::CIRCLE,
                           uint32_t color = pinColorForType(typeid(T)))
         {
             PinStyle style = PinStyle(shape, color);

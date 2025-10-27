@@ -128,4 +128,9 @@ namespace ImBlueprint
     {
         return _style;
     }
+
+    bool NodeInput::hasLink() const
+    {
+        return !_values.empty();
+    }
 } // namespace ImBlueprint

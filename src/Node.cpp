@@ -10,8 +10,51 @@
 
 namespace ImBlueprint
 {
+    NodeTitleStyleEntry::NodeTitleStyleEntry(uint32_t color) :
+        topLeft(color),
+        topRight(color),
+        bottomLeft(color),
+        bottomRight(color)
+    {
+        auto c = ImGui::ColorConvertU32ToFloat4(topLeft);
+        c.x *= 2.0f;
+        c.y *= 0.3f;
+        c.z *= 2.0f;
+
+        auto colorI = ImGui::ColorConvertFloat4ToU32(c);
+        topLeft = colorI;
+        bottomLeft = colorI;
+    }
+
+    NodeTitleStyleEntry::NodeTitleStyleEntry(uint32_t topLeft_, uint32_t topRight_, uint32_t bottomLeft_,
+                                             uint32_t bottomRight_) :
+        topLeft(topLeft_),
+        topRight(topRight_),
+        bottomLeft(bottomLeft_),
+        bottomRight(bottomRight_)
+    {
+    }
+
+    NodeTitleStyle::NodeTitleStyle() :
+        normal(ImNodes::GetStyle().Colors[ImNodesCol_TitleBar]),
+        hover(ImNodes::GetStyle().Colors[ImNodesCol_TitleBarHovered]),
+        selected(ImNodes::GetStyle().Colors[ImNodesCol_TitleBarSelected])
+    {
+    }
+
+    void Node::setTitleStyle(NodeTitleStyle titleStyle)
+    {
+        _titleStyle = std::move(titleStyle);
+    }
+
     Node::Node(std::string name) :
         _name(std::move(name))
+    {
+    }
+
+    Node::Node(std::string name, NodeTitleStyle titleStyle) :
+        _name(std::move(name)),
+        _titleStyle(std::move(titleStyle))
     {
     }
 
@@ -23,29 +66,23 @@ namespace ImBlueprint
     {
     }
 
-    void Node::renderTitle(std::function<void()> closeAction)
+    void Node::renderTitle()
     {
-        if (closeAction != nullptr) {
-            ImGui::PushStyleColor(ImGuiCol_Button, 0);
-            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, 0);
-            ImGui::PushStyleColor(ImGuiCol_ButtonActive, 0);
-            if (ImGui::Button("X", ImVec2(20, 20))) {
-                closeAction();
-            }
-            ImGui::PopStyleColor(3);
-            ImGui::SameLine();
-        }
-        ImGui::TextUnformatted(_name.c_str());
+        ImNodes::DynamicText(_name);
     }
 
     void Node::renderBody()
     {
-        ImGui::Dummy(ImVec2(0, 0));
     }
 
     const std::string& Node::getName() const
     {
         return _name;
+    }
+
+    const NodeTitleStyle& Node::getTitleStyle() const
+    {
+        return _titleStyle;
     }
 
     const std::map<std::string, std::unique_ptr<NodeInput>>& Node::getInputs() const

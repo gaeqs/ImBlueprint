@@ -102,6 +102,11 @@ namespace ImBlueprint
         }
     }
 
+    bool NodeOutput::hasLink() const
+    {
+        return !_links.empty();
+    }
+
     bool NodeOutput::willLinkCreateCircularDependency(const NodeInput* input) const
     {
         std::queue<Node*> queue;

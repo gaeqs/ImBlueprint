@@ -47,6 +47,15 @@ class NodeWithAVeryLongTitle : public ImBlueprint::Node
         defineOutput<float>("First");
         defineOutput<float>("Second");
         defineOutput<float>("Third");
+        defineOutput<float>("Fourth");
+        defineOutput<float>("Fifth");
+        defineOutput<float>("Sixth");
+
+        auto style = ImBlueprint::NodeTitleStyle();
+        style.normal = ImBlueprint::NodeTitleStyleEntry(0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFF000000);
+        style.hover = ImBlueprint::NodeTitleStyleEntry(0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFF000000);
+        style.selected = ImBlueprint::NodeTitleStyleEntry(0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFF000000);
+        setTitleStyle(style);
     }
 };
 
@@ -67,11 +76,7 @@ class ValueSum : public ImBlueprint::Node
 
     void renderBody() override
     {
-        if constexpr (std::is_same_v<T, int>) {
-            ImGui::Text("Current result: %d", _result);
-        } else if constexpr (std::is_same_v<T, float>) {
-            ImGui::Text("Current result: %f", _result);
-        }
+        ImNodes::DynamicText("Current result: " + std::to_string(_result));
     }
 
     void onInputChange(const std::string& name, const std::any& value) override
@@ -151,17 +156,20 @@ int main(int, char**)
     ImBlueprint::Editor editor;
 
     editor.addNode<NodeWithAVeryLongTitle>();
-    editor.addNode<ValueNode<int>>(5);
+    // editor.addNode<ValueNode<int>>(5);
+    //
+    // editor.addNode<ValueNode<float>>(5);
+    //
+    // editor.addNode<ValueSum<int>>();
+    //
+    // editor.addNode<ValueSum<float>>();
+    //
+    // editor.addNode<ValueCast<int, float>>();
+    //
+    // editor.addNode<ValueCast<float, int>>();
 
-    editor.addNode<ValueNode<float>>(5);
-
-    editor.addNode<ValueSum<int>>();
-
-    editor.addNode<ValueSum<float>>();
-
-    editor.addNode<ValueCast<int, float>>();
-
-    editor.addNode<ValueCast<float, int>>();
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -170,11 +178,10 @@ int main(int, char**)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        ImGui::SetNextWindowPos(ImVec2(0, 0));
-        ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
         if (ImGui::Begin("Scene editor")) {
             editor.render();
         }
+        ImGui::ShowMetricsWindow();
         ImGui::End();
 
         ImGui::Render();

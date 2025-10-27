@@ -55,6 +55,8 @@ namespace ImBlueprint
 
         [[nodiscard]] const PinStyle& getStyle() const;
 
+        [[nodiscard]] bool hasLink() const;
+
         template<typename T>
         [[nodiscard]] std::optional<T> getSingleValueAs() const
         {
