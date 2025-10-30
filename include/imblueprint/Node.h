@@ -48,8 +48,12 @@ namespace ImBlueprint
         std::map<std::string, std::unique_ptr<NodeInput>> _inputs;
         std::map<std::string, std::unique_ptr<NodeOutput>> _outputs;
 
+        bool _askingForDeletion;
+
       protected:
         void setTitleStyle(NodeTitleStyle titleStyle);
+
+        void askForDeletion();
 
       public:
         Node(const Node& other) = delete;
@@ -69,6 +73,8 @@ namespace ImBlueprint
         [[nodiscard]] const std::string& getName() const;
 
         [[nodiscard]] const NodeTitleStyle& getTitleStyle() const;
+
+        [[nodiscard]] bool isAskingForDeletion() const;
 
         [[nodiscard]] const std::map<std::string, std::unique_ptr<NodeInput>>& getInputs() const;
 

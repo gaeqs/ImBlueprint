@@ -25,8 +25,6 @@ namespace ImBlueprint
         std::vector<std::unique_ptr<Node>> _nodes;
         bool _minimap;
 
-        Node* _nodeToRemove;
-
         void renderNode(Node* node);
 
       public:

@@ -75,8 +75,7 @@ namespace ImBlueprint
     Editor::Editor(Editor&& other) noexcept :
         _uidProvider(std::move(other._uidProvider)),
         _nodes(std::move(other._nodes)),
-        _minimap(other._minimap),
-        _nodeToRemove(other._nodeToRemove)
+        _minimap(other._minimap)
     {
     }
 
@@ -88,13 +87,11 @@ namespace ImBlueprint
         _uidProvider = std::move(other._uidProvider);
         _nodes = std::move(other._nodes);
         _minimap = other._minimap;
-        _nodeToRemove = other._nodeToRemove;
         return *this;
     }
 
     Editor::Editor() :
-        _minimap(false),
-        _nodeToRemove(nullptr)
+        _minimap(false)
     {
         if (CONTEXT_COUNT++ == 0) {
             ImNodes::CreateContext();
@@ -186,10 +183,9 @@ namespace ImBlueprint
             }
         }
 
-        if (_nodeToRemove != nullptr) {
-            removeNode(_nodeToRemove);
-            _nodeToRemove = nullptr;
-        }
+        std::erase_if(_nodes, [](const auto& it) {
+            return it->isAskingForDeletion();
+        });
 
         if (ImNodes::IsEditorHovered() && ImGui::GetIO().MouseWheel != 0) {
             float zoom = ImNodes::EditorContextGetZoom() + ImGui::GetIO().MouseWheel * 0.1f;
@@ -240,7 +236,9 @@ namespace ImBlueprint
 
     void Editor::removeNode(Node* node)
     {
-        erase_if(_nodes, [node](auto& it) { return it.get() == node; });
+        erase_if(_nodes, [node](auto& it) {
+            return it.get() == node;
+        });
     }
 
     ImVec2 Editor::getNodePosition(Node* node) const

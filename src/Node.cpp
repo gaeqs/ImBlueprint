@@ -34,7 +34,8 @@ namespace ImBlueprint
     {
     }
 
-    NodeTitleStyle::NodeTitleStyle(NodeTitleStyleEntry normal, NodeTitleStyleEntry hover, NodeTitleStyleEntry selected) :
+    NodeTitleStyle::NodeTitleStyle(NodeTitleStyleEntry normal, NodeTitleStyleEntry hover,
+                                   NodeTitleStyleEntry selected) :
         normal(normal),
         hover(hover),
         selected(selected)
@@ -46,14 +47,21 @@ namespace ImBlueprint
         _titleStyle = std::move(titleStyle);
     }
 
+    void Node::askForDeletion()
+    {
+        _askingForDeletion = true;
+    }
+
     Node::Node(std::string name) :
-        _name(std::move(name))
+        _name(std::move(name)),
+        _askingForDeletion(false)
     {
     }
 
     Node::Node(std::string name, NodeTitleStyle titleStyle) :
         _name(std::move(name)),
-        _titleStyle(std::move(titleStyle))
+        _titleStyle(std::move(titleStyle)),
+        _askingForDeletion(false)
     {
     }
 
@@ -78,6 +86,11 @@ namespace ImBlueprint
     const NodeTitleStyle& Node::getTitleStyle() const
     {
         return _titleStyle;
+    }
+
+    bool Node::isAskingForDeletion() const
+    {
+        return _askingForDeletion;
     }
 
     const std::map<std::string, std::unique_ptr<NodeInput>>& Node::getInputs() const
