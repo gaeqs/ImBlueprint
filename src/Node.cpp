@@ -34,6 +34,13 @@ namespace ImBlueprint
     {
     }
 
+    NodeTitleStyle::NodeTitleStyle(NodeTitleStyleEntry normal, NodeTitleStyleEntry hover, NodeTitleStyleEntry selected) :
+        normal(normal),
+        hover(hover),
+        selected(selected)
+    {
+    }
+
     void Node::setTitleStyle(NodeTitleStyle titleStyle)
     {
         _titleStyle = std::move(titleStyle);
