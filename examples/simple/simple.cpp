@@ -53,7 +53,7 @@ class NodeWithAVeryLongTitle : public ImBlueprint::Node
 
         auto style = ImBlueprint::NodeTitleStyle();
         style.normal = ImBlueprint::NodeTitleStyleEntry(0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFF000000);
-        style.hover = ImBlueprint::NodeTitleStyleEntry(0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFF000000);
+        style.hover = ImBlueprint::NodeTitleStyleEntry(0xFFFF5555, 0xFF55FF55, 0xFF5555FF, 0xFF555555);
         style.selected = ImBlueprint::NodeTitleStyleEntry(0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFF000000);
         setTitleStyle(style);
     }
@@ -156,17 +156,17 @@ int main(int, char**)
     ImBlueprint::Editor editor;
 
     editor.addNode<NodeWithAVeryLongTitle>();
-    // editor.addNode<ValueNode<int>>(5);
-    //
-    // editor.addNode<ValueNode<float>>(5);
-    //
-    // editor.addNode<ValueSum<int>>();
-    //
-    // editor.addNode<ValueSum<float>>();
-    //
-    // editor.addNode<ValueCast<int, float>>();
-    //
-    // editor.addNode<ValueCast<float, int>>();
+    editor.addNode<ValueNode<int>>(5);
+
+    editor.addNode<ValueNode<float>>(5);
+
+    editor.addNode<ValueSum<int>>();
+
+    editor.addNode<ValueSum<float>>();
+
+    editor.addNode<ValueCast<int, float>>();
+
+    editor.addNode<ValueCast<float, int>>();
 
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);

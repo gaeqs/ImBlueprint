@@ -58,7 +58,7 @@ namespace ImBlueprint
 
         explicit Node(std::string name, NodeTitleStyle titleStyle);
 
-        ~Node() override;
+        ~Node() override = default;
 
         virtual void onInputChange(const std::string& name, const std::any& value);
 

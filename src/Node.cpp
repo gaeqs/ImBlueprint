@@ -16,14 +16,6 @@ namespace ImBlueprint
         bottomLeft(color),
         bottomRight(color)
     {
-        auto c = ImGui::ColorConvertU32ToFloat4(topLeft);
-        c.x *= 2.0f;
-        c.y *= 0.3f;
-        c.z *= 2.0f;
-
-        auto colorI = ImGui::ColorConvertFloat4ToU32(c);
-        topLeft = colorI;
-        bottomLeft = colorI;
     }
 
     NodeTitleStyleEntry::NodeTitleStyleEntry(uint32_t topLeft_, uint32_t topRight_, uint32_t bottomLeft_,
@@ -55,10 +47,6 @@ namespace ImBlueprint
     Node::Node(std::string name, NodeTitleStyle titleStyle) :
         _name(std::move(name)),
         _titleStyle(std::move(titleStyle))
-    {
-    }
-
-    Node::~Node()
     {
     }
 
@@ -97,8 +85,7 @@ namespace ImBlueprint
 
     void Node::sendOutput(const std::string& name, std::any value) const
     {
-        auto it = _outputs.find(name);
-        if (it != _outputs.end()) {
+        if (auto it = _outputs.find(name); it != _outputs.end()) {
             it->second->setValue(std::move(value));
         }
     }
